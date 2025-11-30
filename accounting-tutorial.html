@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تصميم النظام المحاسبي - شرح مبسط وشامل</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a5f7a;
+            --primary-light: #57c5b6;
+            --primary-dark: #0d3b4c;
+            --accent: #f39c12;
+            --accent-light: #ffeaa7;
+            --success: #27ae60;
+            --error: #e74c3c;
+            --bg: #fafbfc;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --text-light: #7f8c8d;
+            --border: #e0e6ed;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .header h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem; position: relative; }
+        .header p { font-size: 1.1rem; opacity: 0.9; position: relative; }
+
+        .nav {
+            background: var(--card-bg);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+
+        .nav-container {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .nav-btn {
+            padding: 0.6rem 1.2rem;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        .section { display: none; animation: fadeIn 0.5s ease; }
+        .section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--primary-light);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-title .icon { font-size: 1.5rem; }
+
+        .definition-box {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #a8e6cf 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            border-right: 5px solid var(--primary);
+        }
+        .definition-box strong { color: var(--primary-dark); }
+
+        .example-box {
+            background: var(--accent-light);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            border-right: 5px solid var(--accent);
+        }
+        .example-box::before {
+            content: '💡 مثال توضيحي';
+            display: block;
+            font-weight: 700;
+            color: #d68910;
+            margin-bottom: 0.5rem;
+        }
+
+        .tip-box {
+            background: #e8f8f5;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            border-right: 5px solid var(--success);
+        }
+        .tip-box::before {
+            content: '✨ نصيحة';
+            display: block;
+            font-weight: 700;
+            color: var(--success);
+            margin-bottom: 0.5rem;
+        }
+
+        .warning-box {
+            background: #fdeaea;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            border-right: 5px solid var(--error);
+        }
+        .warning-box::before {
+            content: '⚠️ ملاحظة هامة';
+            display: block;
+            font-weight: 700;
+            color: var(--error);
+            margin-bottom: 0.5rem;
+        }
+
+        .styled-list { list-style: none; padding: 0; }
+        .styled-list li {
+            padding: 0.8rem 1rem;
+            margin: 0.5rem 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-right: 4px solid var(--primary-light);
+            transition: all 0.3s ease;
+        }
+        .styled-list li:hover { background: #eef2f7; padding-right: 1.5rem; }
+        .styled-list li strong { color: var(--primary); }
+
+        .diagram {
+            background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        .diagram-title { font-weight: 700; color: var(--primary); margin-bottom: 1.5rem; font-size: 1.1rem; }
+        .tree { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+        .tree-node {
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(26, 95, 122, 0.3);
+        }
+        .tree-node.main { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); font-size: 1.1rem; }
+        .tree-children { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+        .tree-branch { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+        .tree-node.child { background: var(--primary-light); color: var(--primary-dark); font-size: 0.9rem; }
+        .tree-node.grandchild { background: #a8e6cf; color: var(--primary-dark); font-size: 0.85rem; }
+        .connector { width: 2px; height: 20px; background: var(--primary-light); }
+
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .styled-table th { background: var(--primary); color: white; padding: 1rem; font-weight: 600; }
+        .styled-table td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border); }
+        .styled-table tr:hover td { background: #f8f9fa; }
+        .styled-table .debit { color: var(--error); font-weight: 600; }
+        .styled-table .credit { color: var(--success); font-weight: 600; }
+
+        .form-template {
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .form-header {
+            text-align: center;
+            border-bottom: 2px dashed var(--border);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        .form-body {
+            min-height: 100px;
+            border-bottom: 2px dashed var(--border);
+            padding: 1rem 0;
+            margin-bottom: 1rem;
+        }
+        .form-footer {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .form-footer span {
+            border-bottom: 1px solid var(--text);
+            padding: 0.5rem 2rem;
+        }
+
+        .quiz-container {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .quiz-question { font-size: 1.1rem; font-weight: 600; margin-bottom: 1.5rem; color: var(--primary-dark); }
+        .quiz-question .q-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-left: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .quiz-options { display: flex; flex-direction: column; gap: 0.8rem; }
+        .quiz-option {
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            text-align: right;
+        }
+        .quiz-option:hover { border-color: var(--primary); background: #eef6f8; }
+        .quiz-option.selected { border-color: var(--primary); background: #e3f2fd; }
+        .quiz-option.correct { border-color: var(--success); background: #d4edda; }
+        .quiz-option.wrong { border-color: var(--error); background: #f8d7da; }
+        .quiz-feedback { margin-top: 1rem; padding: 1rem; border-radius: 10px; display: none; font-weight: 600; }
+        .quiz-feedback.show { display: block; animation: fadeIn 0.3s ease; }
+        .quiz-feedback.correct { background: #d4edda; color: #155724; }
+        .quiz-feedback.wrong { background: #f8d7da; color: #721c24; }
+        .check-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+        .check-btn:hover { background: var(--primary-dark); transform: translateY(-2px); }
+        .check-btn:disabled { background: #bdc3c7; cursor: not-allowed; transform: none; }
+        .score-display {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border-radius: 16px;
+            margin-top: 2rem;
+            display: none;
+        }
+        .score-display.show { display: block; animation: fadeIn 0.5s ease; }
+        .score-number { font-size: 3rem; font-weight: 800; }
+        .score-text { font-size: 1.2rem; margin-top: 0.5rem; }
+        .progress-container { background: var(--border); border-radius: 10px; height: 8px; margin: 1rem 0; overflow: hidden; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary-light), var(--primary)); border-radius: 10px; transition: width 0.5s ease; }
+
+        .accordion { margin: 1rem 0; }
+        .accordion-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 0.5rem; overflow: hidden; }
+        .accordion-header {
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+        .accordion-header:hover { background: #eef2f7; }
+        .accordion-header .arrow { transition: transform 0.3s ease; }
+        .accordion-item.open .accordion-header .arrow { transform: rotate(180deg); }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .accordion-item.open .accordion-content { max-height: 1000px; }
+        .accordion-body { padding: 1.5rem; }
+
+        .sub-section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 1.5rem 0 1rem;
+            padding-right: 1rem;
+            border-right: 4px solid var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8rem; }
+            .container { padding: 1rem; }
+            .card { padding: 1.5rem; }
+            .nav-container { justify-content: flex-start; }
+            .tree-children { flex-direction: column; }
+        }
+
+        .footer { text-align: center; padding: 2rem; background: var(--primary-dark); color: white; margin-top: 3rem; }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <h1>📚 تصميم النظام المحاسبي</h1>
+    <p>شرح مبسط وشامل للمستندات والدفاتر المحاسبية</p>
+</header>
+
+<nav class="nav">
+    <div class="nav-container">
+        <button class="nav-btn active" onclick="showSection('intro')">المقدمة</button>
+        <button class="nav-btn" onclick="showSection('documents')">المستندات</button>
+        <button class="nav-btn" onclick="showSection('design')">تصميم المستندات</button>
+        <button class="nav-btn" onclick="showSection('storage')">حفظ المستندات</button>
+        <button class="nav-btn" onclick="showSection('ledgers')">الدفاتر المحاسبية</button>
+        <button class="nav-btn" onclick="showSection('journals')">دفاتر اليومية</button>
+        <button class="nav-btn" onclick="showSection('quiz')">اختبر نفسك</button>
+    </div>
+</nav>
+
+<main class="container">
+
+    <!-- Section 1: Introduction -->
+    <section id="intro" class="section active">
+        <div class="card">
+            <h2 class="card-title"><span class="icon">🎯</span> ما هو النظام المحاسبي؟</h2>
+            <div class="definition-box">
+                <strong>التعريف:</strong> النظام المحاسبي هو نظام يقوم بـ <strong>جمع</strong> و<strong>تسجيل</strong> و<strong>تخزين</strong> و<strong>معالجة</strong> البيانات المالية، من أجل تقديم معلومات مفيدة لمتخذي القرار.
+            </div>
+            <div class="example-box">
+                تخيل أن لديك محل تجاري. كل يوم تبيع وتشتري وتدفع مصاريف. النظام المحاسبي هو الطريقة المنظمة التي تسجل بها كل هذه العمليات حتى تعرف في نهاية الشهر: هل ربحت أم خسرت؟ كم المبلغ في الصندوق؟ من يدين لك بالمال؟
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title"><span class="icon">🎯</span> أهداف النظام المحاسبي</h2>
+            <ul class="styled-list">
+                <li><strong>تأمين رقابة فعالة</strong> على الأصول والبيانات - حماية ممتلكات المنشأة من الضياع والسرقة</li>
+                <li><strong>توفير معلومات مفيدة</strong> لاتخاذ القرار وتوفيرها للمستفيدين - مساعدة الإدارة في التخطيط والرقابة</li>
+                <li><strong>معالجة البيانات</strong> عبر عمليات الفرز والتصنيف والتلخيص للوصول لمعلومات مفيدة</li>
+                <li><strong>جمع وتخزين البيانات</strong> المتعلقة بأنشطة وعمليات المنشأة بكفاءة وفعالية</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title"><span class="icon">🏗️</span> أركان النظام المحاسبي</h2>
+            <p style="margin-bottom: 1rem;">تختلف المنشآت في حجمها وطبيعة نشاطها وأوجه عملياتها، لذلك تختلف النظم المحاسبية المطبقة في كل منها. إلا أن هناك <strong>عناصر أساسية</strong> يمكن اعتبارها عوامل مشتركة في جميع النظم المحاسبية:</p>
+            
+            <div class="diagram">
+                <div class="diagram-title">العناصر الأساسية للنظام المحاسبي (٦ عناصر)</div>
+                <div class="tree-children" style="gap: 1rem;">
+                    <div class="tree-node child">١- المجموعة المستندية</div>
+                    <div class="tree-node child">٢- المجموعة الدفترية</div>
+                    <div class="tree-node child">٣- دليل الحسابات</div>
+                    <div class="tree-node child">٤- التقارير المالية</div>
+                    <div class="tree-node child">٥- الأشخاص الذين يشغلون النظام</div>
+                    <div class="tree-node child">٦- المعدات والتجهيزات</div>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <strong>في حالة النظام الآلي (المحوسب):</strong> يُضاف إلى العناصر السابقة عنصران إضافيان:
+                <ul style="margin-top: 0.5rem; margin-right: 1rem;">
+                    <li><strong>البرمجيات المستخدمة</strong> لمعالجة بيانات المنشأة</li>
+                    <li><strong>البنية التحتية لتكنولوجيا المعلومات</strong></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Documents -->
+    <section id="documents" class="section">
+        <div class="card">
+            <h2 class="card-title"><span class="icon">📄</span> المجموعة المستندية</h2>
+            <div class="definition-box">
+                تعتبر المجموعة المستندية أحد المقومات الأساسية للنظام المحاسبي، فهي عبارة عن <strong>نماذج أو أذون</strong> تحتوي على البيانات المتعلقة بالأحداث والعمليات المالية التي تتم داخل أو خارج المنشأة، فهي تتضمن بيانات وقراءات للبيانات المتغيرة بالإضافة إلى توقيعات واعتمادات المسؤولين.
+            </div>
+            <p style="margin: 1rem 0;">فالنظام المحاسبي يعالج الأحداث الاقتصادية المعبر عنها بشكل نقدي، حيث تلتقط الأحداث الاقتصادية من خلال علاقة المنشأة التبادلية مع البيئة المحيطة بها.</p>
+            <p>ويتم توثيق هذه الأحداث الاقتصادية من خلال <strong>المستندات</strong> التي تعتبر الأساس في عملية التسجيل المحاسبي، وتعتبر أيضاً بمثابة <strong>الدليل</strong> على حدوث العمليات الاقتصادية. ولذلك تعتبر بمثابة <strong>المادة الخام</strong> التي تقوم بتزويد النظام المحاسبي بالبيانات التي تدخل في عملية المعالجة، كما تشكل هذه المستندات المدخل في تصميم عمليات الرقابة الداخلية وتحديد مسار المراجعة من أجل اكتشاف الأخطاء ومنع حالات الغش والتلاعب.</p>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title"><span class="icon">📂</span> أشكال (أنواع) المستندات</h2>
+            <p style="margin-bottom: 1rem;">يمكن تقسيم المستندات إلى:</p>
+            
+            <div class="diagram">
+                <div class="diagram-title">تصنيف المستندات</div>
+                <div class="tree">
+                    <div class="tree-node main">المستندات</div>
+                    <div class="connector"></div>
+                    <div class="tree-children">
+                        <div class="tree-branch">
+                            <div class="tree-node child">مستندات خارجية</div>
+                            <div class="connector"></div>
+                            <div class="tree-node grandchild">ترد من خارج المنشأة</div>
+                        </div>
+                        <div class="tree-branch">
+                            <div class="tree-node child">مستندات داخلية</div>
+                            <div class="connector"></div>
+                            <div class="tree-children">
+                                <div class="tree-node grandchild">داخلية-داخلية</div>
+                                <div class="tree-node grandchild">داخلية-خارجية</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>📥 ١- المستندات الخارجية</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <p>هي المستندات التي <strong>ترد للمنشأة من خارجها</strong> نتيجة لتعاملها مع الغير، ولا يمكن للمنشأة التحكم في تصميم هذا النوع من المستندات.</p>
+                            <div class="example-box">
+                                <strong>أمثلة على المستندات الخارجية:</strong>
+                                <ul style="margin-top: 0.5rem; margin-right: 1rem;">
+                                    <li>كشف حساب البنك (يرد من البنك)</li>
+                                    <li>فاتورة الشراء (ترد من المورد)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>📤 ٢- المستندات الداخلية</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <p>هي المستندات التي <strong>تنشأ داخل المنشأة</strong> ويمكن للمنشأة التحكم في تصميم هذه المستندات بما يتلائم مع احتياجاتها، وهي تنقسم إلى:</p>
+                            
+                            <div class="sub-section-title">أ- مستندات داخلية داخلية</div>
+                            <p>هي التي يقتصر استخدامها داخلياً فقط لإثبات العمليات بين إدارات وأقسام المنشأة.</p>
+                            <div class="example-box">
+                                <strong>أمثلة:</strong> إذونات الصرف، بطاقات الوقت، طلب الشراء... الخ
+                            </div>
+
+                            <div class="sub-section-title">ب- مستندات داخلية خارجية</div>
+                            <p>هي المستندات التي تنشأ داخل المنشأة وتوجهها لخارجها للتعامل مع الأطراف الخارجية.</p>
+                            <div class="example-box">
+                                <strong>أمثلة:</strong> فاتورة البيع (ترسل للعميل)، أمر الشراء (يرسل للمورد)... الخ
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title"><span class="icon">🎯</span> أهداف المستندات</h2>
+            <p style="margin-bottom: 1rem;">هناك مجموعة من الأهداف يمكن أن تتحقق من خلال استخدام المستندات وهي:</p>
+            <ul class="styled-list">
+                <li><strong>١- تحديد تدفق البيانات داخل المنشأة:</strong> من خلال تحديد أماكن المستندات وانتقالها وأماكن حفظها، فالمستندات أداة للتواصل داخل المنشأة أو بين المنشأة والغير</li>
+                <li><strong>٢- تمثل تصريحاً بأداء العمليات المختلفة:</strong> فهي تدل على حركة التدفقات المادية لأصول المنشأة (مثلاً: تدل وثيقة الشحن على نقل البضاعة من المنشأة إلى العميل)</li>
+                <li><strong>٣- وسيلة لإثبات العمليات المالية:</strong> وتسجيلها بالدفاتر والسجلات المحاسبية، حيث أنها تمثل مصدر القيد بدفاتر اليومية والترحيل إلى دفاتر الأستاذ</li>
+                <li><strong>٤- أداة هامة للرقابة وتحديد المسؤوليات:</strong> وذلك من خلال متابعة سير العمليات والرقابة عليها</li>
+                <li><strong>٥- الدليل الموضوعي:</strong> الذي يمكن الرجوع إليه للتحقق من صحة البيانات المختلفة</li>
+                <li><strong>٦- تبسيط الإجراءات:</strong> عن طريق تقليل الحاجة إلى إعادة نسخ البيانات المتكررة</li>
+                <li><strong>٧- أساس في إعداد مستندات أخرى:</strong> تعتبر بعض المستندات أساساً في إعداد مستندات أخرى (مثلاً: إعداد أمر الشراء يتم بناءً على طلب الشراء)</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Section 3: Document Design -->
+    <section id="design" class="section">
+        <div class="card">
+            <h2 class="card-title"><span class="icon">✏️</span> اعتبارات تصميم المستندات</h2>
+            <p style="margin-bottom: 1rem;">هناك عدة اعتبارات عامة يجب أن تؤخذ في الحسبان عند تصميم المستندات أو عند إعادة تصميمها ومنها:</p>
+            
+            <ul class="styled-list">
+                <li><strong>١- تخفيض عدد المستندات:</strong> إلى أقل عدد ممكن وملائم لظروف المنشأة، بدون الإخلال بأسس الضبط الداخلي، لأن كثرة عدد المستندات يؤدي إلى زيادة التكاليف وإرباك العمل</li>
+                <li><strong>٢- سهولة التصميم:</strong> مع التركيز على البيانات الضرورية لضمان سرعة ملء المستند بدقة</li>
+                <li><strong>٣- تلافي تكرار تسجيل نفس البيانات:</strong> في أكثر من مستند توفيراً للوقت والجهد</li>
+                <li><strong>٤- الاستفادة من إمكانية استخراج عدة صور:</strong> من كل مستند دون مجهود إضافي، لاستخدامها في أداء أغراض مختلفة، وكذلك لتلافي الوقوع في الخطأ نتيجة لإعادة كتابة نفس المستند أكثر من مرة</li>
+                <li><strong>٥- توفير الحماية لأصول وأموال المنشأة:</strong> مراعاة أن المستندات (سواء في محتواها من البيانات أو في دورتها) تهدف علاوة على جمع البيانات إلى توفير الحماية لأصول وأموال المنشأة (قواعد الضبط الداخلي)</li>
+                <li><strong>٦- القيام بدراسات دورية على المستندات:</strong> بغرض تطويرها في ظل الظروف المتغيرة في المنشأة</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title"><span class="icon">📋</span> الاعتبارات الفنية لتصميم المستندات</h2>
+            <p style="margin-bottom: 1rem;">هناك مجموعة من الاعتبارات الفنية التي يجب أن تؤخذ في الحسبان عند تصميم المستندات، وهي:</p>
+            
+            <div class="accordion">
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>🏢 أ- التعريف بالمنشأة</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            يجب أن يشمل المستند <strong>اسم المنشأة وعنوانها</strong> حتى يمكن للأطراف الخارجية التعرف على مصدر المستند.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>📝 ب- عنوان المستند</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            يجب أن يكون للمستند <strong>عنوان واضح يدل على الغرض منه</strong>، وذلك لتسهيل التفرقة بين المستندات المختلفة.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>🔢 ج- ترقيم المستندات</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            يجب ترقيم المستندات <strong>بأرقام متسلسلة</strong> (وكذلك صور هذه المستندات) لإحكام الرقابة عليها، وتسهيل اكتشاف المستندات الناقصة.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>📊 د- ترتيب البيانات بالمستندات</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            يتم تحديد بيانات المستند بعد دراسة احتياجات الإدارة والأهداف التي يحققها المستند، ويجب <strong>مراعاة التسلسل المنطقي</strong> لبيانات المستند.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>📖 هـ- التعليمات</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            يجب أن يشمل المستند على مجموعة من <strong>التعليمات عن كيفية استيفاء بيانات المستند</strong>، وتعتمد درجة التفصيل في التعليمات على المستوى الثقافي للموظف المسؤول عن كتابة المستند.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>📐 و- مواصفات المستند</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <p>وهي الشكل العام للمستند من ناحية <strong>الحجم، مواصفات الطبع والورق</strong>.</p>
+                            <p style="margin-top: 0.5rem;">ويتوقف حجم المستند على كمية البيانات التي يشملها، ويجب مراعاة:</p>
+                            <ul style="margin-top: 0.5rem; margin-right: 1rem;">
+                                <li>أن يكون حجم المستند <strong>اقتصادياً</strong></li>
+                                <li>أن يتناسب حجم المستند مع <strong>الآلات المستخدمة</strong> في إعداده</li>
+                                <li>أن يتناسب مع <strong>وسائل حفظ المستندات</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>📑 ز- صور المستند</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <p>يتحدد <strong>عدد صور المستند</strong> وفقاً لاستخداماته المختلفة.</p>
+                            <p style="margin-top: 0.5rem;">ويراعى تمييز الصور المختلفة للمستند باستخدام <strong>ألوان مختلفة</strong> بحيث يرسل صورة بلون معين باستمرار إلى الإدارة أو قسم معين.</p>
+                            <div class="example-box">
+                                مثال: الصورة البيضاء للمحاسبة، الصورة الصفراء للمخازن، الصورة الزرقاء للعميل
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>🔐 ح- الرقابة الداخلية</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <p>تتطلب الرقابة الداخلية على المستندات ضرورة اتباع <strong>خط سير داخل المنشأة</strong>، لذا يجب أن يشمل على <strong>أماكن لتوقيعات الموظفين واعتماد رؤسائهم</strong> خلال دورة المستند، مما يسهل تحديد المسؤولية عن الأخطاء.</p>
+                            <p style="margin-top: 0.5rem;">كما يراعى ربط أصل المستند بصوره عن طريق إعطاء الصور <strong>نفس الرقم المتسلسل للأصل</strong> مما يسهل عملية المطابقة والمراجعة.</p>
+                            <p style="margin-top: 0.5rem;">كما يجب أن يتضمن المستند على <strong>التاريخ</strong> حتى يسهل ربط المستند بالدفاتر رقابياً للأخطاء والتلاعب، خاصة عند تماثل عدة مستندات في المبالغ والتفاصيل.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>🎨 ط- استخدام الألوان</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <p>وذلك للتمييز بين <strong>أصل المستند وصوره المختلفة</strong>، مما يسهل توزيع المستند وحفظه.</p>
+                            <p style="margin-top: 0.5rem;">وكذلك تستخدم الألوان للتمييز بين <strong>الأنواع المختلفة من المستندات</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title"><span class="icon">🧩</span> تصميم المستند - الأقسام الثلاثة</h2>
+            <p>عند تصميم المستند يقسم إلى ثلاثة أقسام رئيسية وهي:</p>
+            
+            <div class="diagram">
+                <div style="display: flex; flex-direction: column; gap: 0; max-width: 500px; margin: 0 auto;">
+                    <div style="background: var(--primary); color: white; padding: 1.5rem; border-radius: 10px 10px 0 0;">
+                        <strong>١- مقدمة المستند</strong><br>
+                        <small>وتحتوي على: التعريف بالمستند، وعنوانه، والجهة الطالبة للبيانات، والجهة المطلوب منها البيانات، وتاريخ الطلب، وشعار الجهة المصدرة للمستند</small>
+                    </div>
+                    <div style="background: var(--primary-light); color: var(--primary-dark); padding: 2.5rem;">
+                        <strong>٢- هيكل المستند</strong><br>
+                        <small>ويحتوي على البيانات الرئيسية للمستند (مثل: النوع، الكمية، السعر)</small>
+                    </div>
+                    <div style="background: #a8e6cf; color: var(--primary-dark); padding: 1.5rem; border-radius: 0 0 10px 10px;">
+                        <strong>٣- خاتمة المستند</strong><br>
+                        <small>وتشمل على أماكن التوقيعات والاعتمادات</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sub-section-title">شكل (2): مستند قيد اليومية (قيد اليومية الأولي)</div>
+            <div class="form-template">
+                <div class="form-header">
+                    <p style="color: var(--text-light);">شركة ........................................</p>
+                    <p style="margin-top: 0.5rem;">التاريخ: ..... / ..... / .....</p>
+                    <p style="font-weight: 700; margin-top: 0.5rem;">قيد يومية رقم ( ....... )</p>
+                </div>
+                <div class="form-body">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>مدين</th>
+                                <th>دائن</th>
+                                <th>جزئي</th>
+                                <th>البيـــــــــان</th>
+                                <th>ر.ح</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td></td><td></td><td></td><td></td><td></td></tr>
+                            <tr><td></td><td></td><td></td><td></td><td></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-footer">
+                    <span>إعداد المحاسب: ............</span>
+                    <span>مراجعة: ............</span>
+                    <span>اعتماد الإدارة المالية: ............</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="warning-box">
+            <strong>لا يكفي أن يقوم مصمم النظام المحاسبي بتصميم المستندات فقط</strong>، بل يجب أن يحدد <strong>حركة هذه المستندات داخل المنشأة بكل وضوح</strong>، أي يتتبع أثر المستندات من لحظة نشوئها إلى لحظة وضعها في الأرشيف (حفظها).
+        </div>
+    </section>
+
+    <!-- Section 4: Document Storage -->
+    <section id="storage" class="section">
+        <div class="card">
+            <h2 class="card-title"><span class="icon">📁</span> طرق حفظ المستندات</h2>
+            <p>يمكن التمييز بين مرحلتين أساسيتين لحفظ المستند هما:</p>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title"><span class="icon">📦</span> ١- الحفظ قبل استعمال المستند</h2>
+            <p>يجب حفظ المستندات غير المستعملة <strong>(المستندات الداخلية)</strong> من خلال:</p>
+            <ul class="styled-list">
+                <li>تسجيل <strong>جميع الظروف والحالات</strong> التي قد تؤثر في وجودها وفي شكلها</li>
+                <li>يجب أن يفتح <strong>سجل خاص</strong> تسجل فيه دفاتر المستندات حسب أرقام تسلسلها</li>
+                <li>يجب أن يسجل بهذا السجل <strong>معلومات عن الشخص المستفيد</strong> أو المسلم له دفتر المستندات، وذلك لتسهيل عملية مراقبة استعمال المستندات</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title"><span class="icon">🗄️</span> ٢- الحفظ بعد استخدام المستند</h2>
+            <p>يجب حفظ المستندات المستعملة والمتعلقة بآثار العمليات التي قامت بها المنشأة <strong>(المستندات الخارجية والداخلية)</strong> بكيفية تضمن سلامة هذه المستندات وتسهل عملية الرجوع إليها عند الحاجة.</p>
+            
+            <div class="sub-section-title">طرق الحفظ بعد الاستخدام:</div>
+            <ul class="styled-list">
+                <li><strong>أ- حفظ نوعي للمستندات:</strong> أي حسب أرقامها أو حسب الجهات المتعاملين معها أو حسب أرقام الأصناف</li>
+                <li><strong>ب- حفظ مرفق بإذون الصرف:</strong> كما في حالة المشتريات النقدية أو المدفوعات النقدية</li>
+                <li><strong>ج- حفظ في دفتر المستند نفسه:</strong> حيث يبقى المستند في دفتره الأصلي</li>
+                <li><strong>د- حفظ المستندات المتعلقة بكل عملية (مستندات القيد الأولي) مع مستند يسمى نموذج قيد اليومية:</strong> حيث يمكن الرجوع لهذه المستندات من خلال نوع العملية ورقم القيد</li>
+            </ul>
+
+            <div class="example-box">
+                عند إجراء عملية شراء، يتم حفظ فاتورة الشراء مع إذن الاستلام وأمر الشراء معاً في ملف واحد مرتبط بقيد اليومية رقم (X)، مما يسهل الرجوع لجميع مستندات العملية عند الحاجة.
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Ledgers -->
+    <section id="ledgers" class="section">
+        <div class="card">
+            <h2 class="card-title"><span class="icon">📚</span> المجموعة الدفترية</h2>
+            <div class="definition-box">
+                تمثل الدفاتر والسجلات المحاسبية أداة <strong>التسجيل والتحليل والترصيد</strong>، وبالتالي فهي المصدر لإعداد التقارير والقوائم المالية.
+            </div>
+            <p style="margin: 1rem 0;">فبعد أن يتم تجميع البيانات المتعلقة بالعمليات المالية عن طريق <strong>المستندات</strong>، يتم تفريغ هذه البيانات في <strong>دفاتر اليومية</strong> باستخدام القيود المحاسبية، ثم ترحل هذه القيود إلى <strong>دفاتر الأستاذ</strong>، ثم يتم إعداد <strong>ميزان المراجعة</strong> قبل وبعد التسويات وصولاً إلى <strong>القوائم المالية</strong>.</p>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title"><span class="icon">📊</span> تقسيم المجموعة الدفترية</h2>
+            <p style="margin-bottom: 1rem;">وتنقسم المجموعة الدفترية إلى:</p>
+            
+            <div class="diagram">
+                <div class="diagram-title">شكل (3): أنواع الدفاتر المحاسبية</div>
+                <div class="tree">
+                    <div class="tree-node main">المجموعة الدفترية</div>
+                    <div class="connector"></div>
+                    <div class="tree-children">
+                        <div class="tree-branch">
+                            <div class="tree-node child">١- دفاتر اليومية</div>
+                            <div class="connector"></div>
+                            <div class="tree-children" style="flex-direction: column; gap: 0.3rem;">
+                                <div class="tree-node grandchild">أ- دفتر اليومية العامة</div>
+                                <div class="tree-node grandchild">ب- دفاتر اليوميات المساعدة</div>
+                            </div>
+                        </div>
+                        <div class="tree-branch">
+                            <div class="tree-node child">٢- دفاتر الأستاذ</div>
+                            <div class="connector"></div>
+                            <div class="tree-children" style="flex-direction: column; gap: 0.3rem;">
+                                <div class="tree-node grandchild">أ- دفتر الأستاذ العام</div>
+                                <div class="tree-node grandchild">ب- دفاتر الأستاذ المساعد</div>
+                            </div>
+                        </div>
+                        <div class="tree-branch">
+                            <div class="tree-node child">٣- دفاتر بيانية وإحصائية</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: Journals -->
+    <section id="journals" class="section">
+        <div class="card">
+            <h2 class="card-title"><span class="icon">📓</span> ١- دفاتر اليومية</h2>
+            <div class="definition-box">
+                وهي عبارة عن دفاتر يثبت فيها <strong>جميع العمليات المالية</strong> التي قامت بها المنشأة <strong>حسب تسلسل حدوثها التاريخي</strong>، وذلك من واقع المستندات المؤيدة لتلك العمليات المالية.
+            </div>
+            <div class="tip-box">
+                يتم تسجيل العمليات المحاسبية في دفتر اليومية وفقاً لـ<strong>نظرية القيد المزدوج</strong> التي تنص على أن كل عملية مالية تؤثر في طرفين أو حسابين بحيث يجعل الحساب الأول <strong>مديناً</strong> والحساب الثاني <strong>دائناً</strong>، وبالتالي يكون الحسابان في العملية الواحدة <strong>متساويين القيمة</strong>.
+            </div>
+            <p style="margin-top: 1rem;">ويمكن تقسيم هذه الدفاتر إلى نوعين:</p>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title"><span class="icon">📘</span> أ- دفتر اليومية العامة (اليومية الأصلية)</h2>
+            <p>وهو دفتر يحتوي على <strong>جميع العمليات والأحداث المالية</strong> التي قامت بها المنشأة بحسب تسلسلها التاريخي، بدون تمييز لهذه العمليات (شراء نقدي، شراء بالآجل، بيع نقدي، بيع بالآجل، مرتبات، مصروف إيجار... الخ).</p>
+            <p style="margin-top: 1rem;">ويكون شكل هذا الدفتر كما يلي:</p>
+            <p style="margin-top: 1rem;">باستخدام دفتر اليومية العامة يكون بإمكان <strong>شخص واحد</strong> تسجيل ومتابعة جميع عمليات المشروع المالية من خلال تسجيلها أولاً بأول في هذا الدفتر.</p>
+
+            <div class="sub-section-title">شكل (4): دفتر اليومية العامة</div>
+            <div class="example-box">
+                <p><strong>مثال:</strong> في 12/3/06 باعت الشركة بضاعة على الحساب لمحمد سالم بقيمة 1,000 ريال</p>
+                <table class="styled-table" style="margin-top: 1rem;">
+                    <thead>
+                        <tr>
+                            <th>رقم صفحة الأستاذ</th>
+                            <th>رقم القيد</th>
+                            <th>التاريخ</th>
+                            <th>البيـــان</th>
+                            <th>دائن</th>
+                            <th>مدين</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>5</td>
+                            <td>129</td>
+                            <td>06/3/12</td>
+                            <td class="debit">المدينون</td>
+                            <td></td>
+                            <td class="debit">1,000</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="credit" style="padding-right: 2rem;">المبيعات</td>
+                            <td class="credit">1,000</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" style="text-align: center; font-style: italic; color: var(--text-light);">بيع بضاعة على الحساب لمحمد سالم</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title"><span class="icon">📗</span> ب- دفتر اليومية المساعدة (الخاصة)</h2>
+            <p>عندما يزداد حجم عمليات المنشأة يصبح من الصعب على شخص واحد متابعة جميع هذه العمليات بمفرده، كذلك يلاحظ تشابه وتكرار وقوع العديد من العمليات المالية (أي تشابه أحد طرفي القيد في كل عملية).</p>
+            <p style="margin-top: 1rem;">لذلك فإن استعمال دفاتر يومية مساعدة خاصة بكل عملية <strong>يزيد من كفاءة العمل المحاسبي</strong> ويختصر الجهد والوقت في الإثبات في هذه الدفاتر نفسها وفي الترحيل لحسابات الأستاذ.</p>
+            <p style="margin-top: 1rem;">ويمكن حصر عمليات المشروع التجاري في عمليات: <strong>الشراء، البيع، دفع النقدية، قبض النقدية</strong>.</p>
+
+            <div class="sub-section-title">ومن أشهر دفاتر اليوميات المساعدة استخداماً هي:</div>
+            <ul class="styled-list">
+                <li><strong>١- يومية المشتريات الآجلة:</strong> لتسجيل جميع عمليات الشراء على الحساب (بالآجل)</li>
+                <li><strong>٢- يومية المبيعات الآجلة:</strong> لتسجيل جميع عمليات البيع على الحساب (بالآجل)</li>
+                <li><strong>٣- يومية المدفوعات النقدية:</strong> لتسجيل جميع عمليات الدفع النقدي</li>
+                <li><strong>٤- يومية المقبوضات النقدية:</strong> لتسجيل جميع عمليات القبض النقدي</li>
+            </ul>
+
+            <div class="example-box">
+                <p><strong>الفرق العملي:</strong></p>
+                <p>بدلاً من تسجيل كل عملية بيع آجل في دفتر اليومية العامة بشكل منفصل، يتم تسجيلها في <strong>يومية المبيعات الآجلة</strong>. هذا يسهل العمل ويوفر الوقت خاصة إذا كانت المنشأة تقوم بعشرات عمليات البيع الآجل يومياً.</p>
+                <p style="margin-top: 0.5rem;">كما أن ترحيل مجموع المبيعات الآجلة للشهر يتم <strong>دفعة واحدة</strong> إلى دفتر الأستاذ بدلاً من ترحيل كل عملية على حدة.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 7: Quiz -->
+    <section id="quiz" class="section">
+        <div class="card">
+            <h2 class="card-title"><span class="icon">🎯</span> اختبر فهمك للفصل</h2>
+            <p>أجب على الأسئلة التالية لاختبار فهمك الشامل للمادة. اختر الإجابة الصحيحة ثم اضغط على "تحقق".</p>
+            <div class="progress-container"><div class="progress-bar" id="quizProgress" style="width: 0%"></div></div>
+            <p style="text-align: center; color: var(--text-light); font-size: 0.9rem;">التقدم: <span id="progressText">0</span> من 12 سؤال</p>
+        </div>
+
+        <div class="quiz-container" id="q1">
+            <div class="quiz-question"><span class="q-number">1</span> ما هو تعريف النظام المحاسبي؟</div>
+            <div class="quiz-options">
+                <button class="quiz-option" onclick="selectOption(this, 'q1')">نظام لحفظ الملفات فقط</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q1')" data-correct="true">نظام يجمع ويسجل ويخزن ويعالج البيانات لتقديم معلومات لمتخذي القرار</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q1')">برنامج حاسوبي للمحاسبة</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q1')">طريقة لحساب الضرائب</button>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q1')" disabled>تحقق من الإجابة</button>
+            <div class="quiz-feedback" id="feedback-q1"></div>
+        </div>
+
+        <div class="quiz-container" id="q2">
+            <div class="quiz-question"><span class="q-number">2</span> كم عدد أركان النظام المحاسبي الأساسية؟</div>
+            <div class="quiz-options">
+                <button class="quiz-option" onclick="selectOption(this, 'q2')">4 أركان</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q2')">5 أركان</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q2')" data-correct="true">6 أركان</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q2')">8 أركان</button>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q2')" disabled>تحقق من الإجابة</button>
+            <div class="quiz-feedback" id="feedback-q2"></div>
+        </div>
+
+        <div class="quiz-container" id="q3">
+            <div class="quiz-question"><span class="q-number">3</span> فاتورة الشراء من المورد تعتبر:</div>
+            <div class="quiz-options">
+                <button class="quiz-option" onclick="selectOption(this, 'q3')">مستند داخلي-داخلي</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q3')">مستند داخلي-خارجي</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q3')" data-correct="true">مستند خارجي</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q3')">ليست مستنداً محاسبياً</button>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q3')" disabled>تحقق من الإجابة</button>
+            <div class="quiz-feedback" id="feedback-q3"></div>
+        </div>
+
+        <div class="quiz-container" id="q4">
+            <div class="quiz-question"><span class="q-number">4</span> فاتورة البيع التي ترسلها المنشأة للعميل تعتبر:</div>
+            <div class="quiz-options">
+                <button class="quiz-option" onclick="selectOption(this, 'q4')">مستند خارجي</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q4')" data-correct="true">مستند داخلي-خارجي</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q4')">مستند داخلي-داخلي</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q4')">وثيقة شحن</button>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q4')" disabled>تحقق من الإجابة</button>
+            <div class="quiz-feedback" id="feedback-q4"></div>
+        </div>
+
+        <div class="quiz-container" id="q5">
+            <div class="quiz-question"><span class="q-number">5</span> إذن الصرف وبطاقات الوقت تعتبر من:</div>
+            <div class="quiz-options">
+                <button class="quiz-option" onclick="selectOption(this, 'q5')">المستندات الخارجية</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q5')" data-correct="true">المستندات الداخلية-الداخلية</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q5')">المستندات الداخلية-الخارجية</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q5')">الدفاتر المحاسبية</button>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q5')" disabled>تحقق من الإجابة</button>
+            <div class="quiz-feedback" id="feedback-q5"></div>
+        </div>
+
+        <div class="quiz-container" id="q6">
+            <div class="quiz-question"><span class="q-number">6</span> لماذا يجب ترقيم المستندات بأرقام متسلسلة؟</div>
+            <div class="quiz-options">
+                <button class="quiz-option" onclick="selectOption(this, 'q6')">لتسهيل الطباعة</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q6')">لأنها متطلب قانوني فقط</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q6')" data-correct="true">لإحكام الرقابة عليها وتسهيل اكتشاف المستندات الناقصة</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q6')">لتوفير الحبر</button>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q6')" disabled>تحقق من الإجابة</button>
+            <div class="quiz-feedback" id="feedback-q6"></div>
+        </div>
+
+        <div class="quiz-container" id="q7">
+            <div class="quiz-question"><span class="q-number">7</span> ما هي أقسام المستند الثلاثة؟</div>
+            <div class="quiz-options">
+                <button class="quiz-option" onclick="selectOption(this, 'q7')">العنوان، المحتوى، التاريخ</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q7')" data-correct="true">المقدمة، الهيكل، الخاتمة</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q7')">الرأس، الوسط، الذيل</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q7')">البيانات، الأرقام، التوقيعات</button>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q7')" disabled>تحقق من الإجابة</button>
+            <div class="quiz-feedback" id="feedback-q7"></div>
+        </div>
+
+        <div class="quiz-container" id="q8">
+            <div class="quiz-question"><span class="q-number">8</span> لماذا تستخدم الألوان المختلفة في صور المستند الواحد؟</div>
+            <div class="quiz-options">
+                <button class="quiz-option" onclick="selectOption(this, 'q8')">للزينة فقط</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q8')" data-correct="true">للتمييز بين الصور وتسهيل توزيعها على الإدارات المختلفة</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q8')">لتوفير تكلفة الطباعة</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q8')">لأنها متطلب قانوني</button>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q8')" disabled>تحقق من الإجابة</button>
+            <div class="quiz-feedback" id="feedback-q8"></div>
+        </div>
+
+        <div class="quiz-container" id="q9">
+            <div class="quiz-question"><span class="q-number">9</span> نظرية القيد المزدوج تعني أن:</div>
+            <div class="quiz-options">
+                <button class="quiz-option" onclick="selectOption(this, 'q9')">كل عملية تسجل مرتين في نفس الدفتر</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q9')" data-correct="true">كل عملية مالية تؤثر في حسابين: أحدهما مدين والآخر دائن بنفس القيمة</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q9')">يجب أن يوقع شخصان على كل مستند</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q9')">كل عملية تحتاج مستندين</button>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q9')" disabled>تحقق من الإجابة</button>
+            <div class="quiz-feedback" id="feedback-q9"></div>
+        </div>
+
+        <div class="quiz-container" id="q10">
+            <div class="quiz-question"><span class="q-number">10</span> يومية المشتريات الآجلة تستخدم لتسجيل:</div>
+            <div class="quiz-options">
+                <button class="quiz-option" onclick="selectOption(this, 'q10')">جميع المشتريات النقدية والآجلة</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q10')">المشتريات النقدية فقط</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q10')" data-correct="true">عمليات الشراء على الحساب فقط</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q10')">المبيعات الآجلة</button>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q10')" disabled>تحقق من الإجابة</button>
+            <div class="quiz-feedback" id="feedback-q10"></div>
+        </div>
+
+        <div class="quiz-container" id="q11">
+            <div class="quiz-question"><span class="q-number">11</span> ما هي الفائدة من استخدام دفاتر اليومية المساعدة؟</div>
+            <div class="quiz-options">
+                <button class="quiz-option" onclick="selectOption(this, 'q11')">توفير تكلفة الورق</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q11')">إلغاء الحاجة لدفتر اليومية العامة</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q11')" data-correct="true">زيادة كفاءة العمل المحاسبي واختصار الجهد والوقت</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q11')">تقليل عدد الموظفين</button>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q11')" disabled>تحقق من الإجابة</button>
+            <div class="quiz-feedback" id="feedback-q11"></div>
+        </div>
+
+        <div class="quiz-container" id="q12">
+            <div class="quiz-question"><span class="q-number">12</span> ما الذي يجب على مصمم النظام المحاسبي فعله بالإضافة لتصميم المستندات؟</div>
+            <div class="quiz-options">
+                <button class="quiz-option" onclick="selectOption(this, 'q12')">تصميم شعار الشركة</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q12')" data-correct="true">تحديد حركة المستندات داخل المنشأة من لحظة نشوئها حتى أرشفتها</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q12')">تعيين الموظفين</button>
+                <button class="quiz-option" onclick="selectOption(this, 'q12')">شراء الأثاث المكتبي</button>
+            </div>
+            <button class="check-btn" onclick="checkAnswer('q12')" disabled>تحقق من الإجابة</button>
+            <div class="quiz-feedback" id="feedback-q12"></div>
+        </div>
+
+        <div class="score-display" id="scoreDisplay">
+            <div class="score-number" id="scoreNumber">0/12</div>
+            <div class="score-text" id="scoreText">أحسنت!</div>
+            <button class="check-btn" onclick="resetQuiz()" style="margin-top: 1rem; background: white; color: var(--primary);">إعادة الاختبار</button>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <p>📚 تم إعداد هذا الشرح التفاعلي الشامل لمساعدتكم في فهم تصميم النظام المحاسبي</p>
+    <p style="margin-top: 0.5rem; opacity: 0.8;">بالتوفيق في دراستكم! 🌟</p>
+</footer>
+
+<script>
+    function showSection(sectionId) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(sectionId).classList.add('active');
+        event.target.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleAccordion(header) {
+        const item = header.parentElement;
+        const isOpen = item.classList.contains('open');
+        item.parentElement.querySelectorAll('.accordion-item').forEach(acc => acc.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+    }
+
+    let score = 0, answered = 0;
+    const totalQuestions = 12;
+
+    function selectOption(button, qId) {
+        const container = document.getElementById(qId);
+        container.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+        button.classList.add('selected');
+        container.querySelector('.check-btn').disabled = false;
+    }
+
+    function checkAnswer(qId) {
+        const container = document.getElementById(qId);
+        const selected = container.querySelector('.quiz-option.selected');
+        const feedback = document.getElementById('feedback-' + qId);
+        const checkBtn = container.querySelector('.check-btn');
+        const options = container.querySelectorAll('.quiz-option');
+        
+        options.forEach(o => o.style.pointerEvents = 'none');
+        checkBtn.disabled = true;
+        checkBtn.style.display = 'none';
+        
+        if (selected.hasAttribute('data-correct')) {
+            selected.classList.add('correct');
+            feedback.textContent = '✅ إجابة صحيحة! أحسنت';
+            feedback.className = 'quiz-feedback show correct';
+            score++;
+        } else {
+            selected.classList.add('wrong');
+            options.forEach(o => { if (o.hasAttribute('data-correct')) o.classList.add('correct'); });
+            feedback.textContent = '❌ إجابة خاطئة. الإجابة الصحيحة موضحة باللون الأخضر';
+            feedback.className = 'quiz-feedback show wrong';
+        }
+        
+        answered++;
+        document.getElementById('quizProgress').style.width = (answered / totalQuestions) * 100 + '%';
+        document.getElementById('progressText').textContent = answered;
+        
+        if (answered === totalQuestions) {
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            document.getElementById('scoreNumber').textContent = score + '/' + totalQuestions;
+            const pct = (score / totalQuestions) * 100;
+            document.getElementById('scoreText').textContent = pct >= 80 ? '🎉 ممتاز! لديك فهم قوي للمادة' : pct >= 60 ? '👍 جيد! راجع الأقسام التي أخطأت فيها' : '📖 تحتاج لمزيد من المراجعة. لا تستسلم!';
+            scoreDisplay.classList.add('show');
+        }
+    }
+
+    function resetQuiz() {
+        score = 0; answered = 0;
+        for (let i = 1; i <= totalQuestions; i++) {
+            const container = document.getElementById('q' + i);
+            container.querySelectorAll('.quiz-option').forEach(o => {
+                o.classList.remove('selected', 'correct', 'wrong');
+                o.style.pointerEvents = 'auto';
+            });
+            container.querySelector('.check-btn').disabled = true;
+            container.querySelector('.check-btn').style.display = 'inline-block';
+            document.getElementById('feedback-q' + i).className = 'quiz-feedback';
+        }
+        document.getElementById('quizProgress').style.width = '0%';
+        document.getElementById('progressText').textContent = '0';
+        document.getElementById('scoreDisplay').classList.remove('show');
+        document.getElementById('q1').scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+</body>
+</html>
